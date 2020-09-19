@@ -45,8 +45,8 @@ interface IUniswapV2Pair {
     function mint(address payable to) external payable returns (uint liquidity);
     function burn(address payable to) external returns (uint amount0, uint amount1);
     function swap(uint amount0Out, uint amount1Out, address payable to, bytes calldata data) external payable returns(bool);
-    function skim(address payable to) external;
-    function sync() external;
+    function skim(address payable to) external payable returns(bool);
+    function sync() external payable returns(bool);
 
     function initialize(address, address) external;
 }

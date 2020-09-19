@@ -205,15 +205,17 @@ contract UniswapV2Pair is IUniswapV2Pair, UniswapV2ERC20 {
     }
 
     // force balances to match reserves
-    function skim(address payable to) external lock {
+    function skim(address payable to) external payable lock returns(bool) {
         address _token0 = token0; // gas savings
         address _token1 = token1; // gas savings
         _safeTransfer(_token0, to, _balanceOfThis(_token0).sub(reserve0));
         _safeTransfer(_token1, to, _balanceOfThis(_token1).sub(reserve1));
+        return true;
     }
 
     // force reserves to match balances
-    function sync() external lock {
+    function sync() external payable lock returns(bool) {
         _update(_balanceOfThis(token0), _balanceOfThis(token1), reserve0, reserve1);
+        return true;
     }
 }
