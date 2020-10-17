@@ -1,21 +1,23 @@
 pragma solidity =0.5.16;
 
-import './interfaces/IUniswapV2Factory.sol';
 import './UniswapV2Pair.sol';
+import "./Ownable.sol";
 
-contract UniswapV2Factory is IUniswapV2Factory {
-    address public feeTo;
-    address public feeToSetter;
+contract UniswapV2Factory is Ownable {
+
     address public constant BNB = 0x0000000000000000000000000000000000000001;
 
     mapping(address => mapping(address => address)) public getPair;
     address[] public allPairs;
 
+    mapping(address => bool) isAllowedAddress;
     event PairCreated(address indexed token0, address indexed token1, address pair, uint);
 
-    constructor(address _feeToSetter) public {
-        feeToSetter = _feeToSetter;
+    function changeAllowedAddress(address _which,bool _bool) external onlyOwner returns(bool){
+        isAllowedAddress[_which] = _bool;
+        return true;
     }
+
 
     function allPairsLength() external view returns (uint) {
         return allPairs.length;
@@ -38,18 +40,22 @@ contract UniswapV2Factory is IUniswapV2Factory {
         emit PairCreated(token0, token1, pair, allPairs.length);
     }
 
-    function setFeeTo(address _feeTo) external {
-        require(msg.sender == feeToSetter, 'UniswapV2: FORBIDDEN');
-        feeTo = _feeTo;
-    }
-
-    function setFeeToSetter(address _feeToSetter) external {
-        require(msg.sender == feeToSetter, 'UniswapV2: FORBIDDEN');
-        feeToSetter = _feeToSetter;
-    }
-
     function cratePool(address tokenA, address tokenB, uint amountA, uint amountB, address payable to) external payable returns(address pair, uint liquidity) {
         pair = createPair(tokenA, tokenB);
+        bool isBNB;
+        if (tokenA == BNB) isBNB = true;
+        else safeTransferFrom(tokenA, msg.sender, pair, amountA);
+
+        if (tokenB == BNB) isBNB = true;
+        else safeTransferFrom(tokenB, msg.sender, pair, amountB);
+
+        if (isBNB) liquidity = IUniswapV2Pair(pair).mint.value(msg.value)(to);
+        else liquidity = IUniswapV2Pair(pair).mint(to);
+    }
+
+    function mint(address tokenA, address tokenB, uint amountA, uint amountB, address payable to) external payable returns(uint liquidity) {
+        require(isAllowedAddress[msg.sender],"ERR_ALLOWED_ADDRESS_ONLY");
+        address pair = getPair[tokenA][tokenB];
         bool isBNB;
         if (tokenA == BNB) isBNB = true;
         else safeTransferFrom(tokenA, msg.sender, pair, amountA);
