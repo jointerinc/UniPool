@@ -6,7 +6,7 @@ import "./Ownable.sol";
 contract UniswapV2Factory is Ownable {
 
     address public constant BNB = 0x0000000000000000000000000000000000000001;
-
+    address public feeTo;
     mapping(address => mapping(address => address)) public getPair;
     address[] public allPairs;
 

@@ -206,6 +206,21 @@
 			},
 			{
 				"constant": true,
+				"inputs": [],
+				"name": "feeTo",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
 				"inputs": [
 					{
 						"internalType": "address",
@@ -407,10 +422,10 @@
 			]
 		},
 		"localhost/contracts/UniswapV2Factory.sol": {
-			"keccak256": "0xd9cdbe04da2aa4523448927668be1cbe57768ebcecdc832930366d71b9fc6f05",
+			"keccak256": "0x1a57be2040d859a217f1079c6185c184c5dec3a4358f060d4778b5f28340ed88",
 			"urls": [
-				"bzz-raw://0fb7caa775d2d4fd8f2b811a975e6eb92c11f8f384bfc1dc0a81c1a7c3eb4852",
-				"dweb:/ipfs/QmfG4djH3Qnmmra5bzdrvDi33R6sPxazPtb5WyN1b6Hj8h"
+				"bzz-raw://60e060fcaa79a143a5c5045c4bd8b1143de5d75347a13f8c1e9ee6110d95a4c1",
+				"dweb:/ipfs/QmbuvUG7Uf1seaeDAJQuZiNfspMRZY7mge12Wbs993N2Bk"
 			]
 		},
 		"localhost/contracts/UniswapV2Pair.sol": {
